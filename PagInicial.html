@@ -1,0 +1,485 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Marketplace Acadêmico</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #2C3E50;
+            --accent: #E74C3C;
+            --light: #ECF0F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+            border: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem 0;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 25px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+        }
+
+        .categories {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+        }
+
+        .category-card h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .motivation-section {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            margin-top: 3rem;
+        }
+
+        .motivation-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .motivation-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .social-auth {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: #f5f5f5;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Marketplace Estudantil</div>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" onclick="openModal('login')">Entrar</button>
+                <button class="btn btn-primary" onclick="openModal('register')">Cadastrar</button>
+            </div>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Busque por serviços acadêmicos...">
+        </div>
+    </header>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('login')">&times;</span>
+            <h2>Entrar</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Entrar</button>
+                <div class="social-auth">
+                    <button type="button" class="social-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#4285F4">
+                            <path
+                                d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
+                        </svg>
+                        Google
+                    </button>
+                    <button type="button" class="social-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#000">
+                            <path
+                                d="M17.05 20.28c-.98.954-2.02 1.81-3.123 2.544-1.07.723-2.1 1.08-3.096 1.08-1.027 0-1.894-.3-2.604-.9-.71-.6-1.064-1.334-1.064-2.204 0-.82.293-1.67.88-2.55.587-.877 1.446-1.723 2.578-2.54 1.132-.815 2.365-1.474 3.7-1.974 1.335-.5 2.628-.75 3.882-.75.587 0 1.134.077 1.642.23.508.154.914.37 1.218.65.304.28.456.62.456 1.02 0 .4-.152.74-.456 1.02-.304.28-.71.496-1.218.65-.508.153-1.055.23-1.642.23-1.254 0-2.547-.25-3.882-.75-1.335-.5-2.568-1.16-3.7-1.974-1.132-.817-1.99-1.663-2.578-2.54-.587-.88-.88-1.73-.88-2.55 0-.87.354-1.604 1.064-2.204.71-.6 1.577-.9 2.604-.9.996 0 2.027.357 3.096 1.08 1.102.734 2.142 1.59 3.123 2.544.98.954 1.82 1.97 2.518 3.05.697 1.08 1.045 2.14 1.045 3.18s-.348 2.1-1.045 3.18c-.697 1.08-1.537 2.096-2.518 3.05z" />
+                        </svg>
+                        Apple
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('register')">&times;</span>
+            <h2>Cadastrar</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Data de Nascimento</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Cadastrar</button>
+                <div class="social-auth">
+                    <button type="button" class="social-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#4285F4">
+                            <path
+                                d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
+                        </svg>
+                        Google
+                    </button>
+                    <button type="button" class="social-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#000">
+                            <path
+                                d="M17.05 20.28c-.98.954-2.02 1.81-3.123 2.544-1.07.723-2.1 1.08-3.096 1.08-1.027 0-1.894-.3-2.604-.9-.71-.6-1.064-1.334-1.064-2.204 0-.82.293-1.67.88-2.55.587-.877 1.446-1.723 2.578-2.54 1.132-.815 2.365-1.474 3.7-1.974 1.335-.5 2.628-.75 3.882-.75.587 0 1.134.077 1.642.23.508.154.914.37 1.218.65.304.28.456.62.456 1.02 0 .4-.152.74-.456 1.02-.304.28-.71.496-1.218.65-.508.153-1.055.23-1.642.23-1.254 0-2.547-.25-3.882-.75-1.335-.5-2.568-1.16-3.7-1.974-1.132-.817-1.99-1.663-2.578-2.54-.587-.88-.88-1.73-.88-2.55 0-.87.354-1.604 1.064-2.204.71-.6 1.577-.9 2.604-.9.996 0 2.027.357 3.096 1.08 1.102.734 2.142 1.59 3.123 2.544.98.954 1.82 1.97 2.518 3.05.697 1.08 1.045 2.14 1.045 3.18s-.348 2.1-1.045 3.18c-.697 1.08-1.537 2.096-2.518 3.05z" />
+                        </svg>
+                        Apple
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <main class="categories">
+        <a href="ExatasTecnologia.html">
+            <div class="category-card">
+                <svg class="category-icon floating" viewBox="0 0 24 24" fill="var(--primary)">
+                    <path d="M12 3L1 9L12 15L21 10.09V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" />
+                </svg>
+                <h3>Exatas e Tecnologia</h3>
+                <p>Matemática, Física, Química, Programação e TI</p>
+            </div>
+        </a>
+
+        <div class="category-card">
+            <a href="Humanas.html"><svg class="category-icon floating" viewBox="0 0 24 24" fill="var(--primary)">
+                    <path
+                        d="M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6Z" />
+                </svg>
+                <h3>Humanas</h3>
+                <p>História, Geografia, Sociologia e Filosofia</p>
+        </div></a>
+
+        <div class="category-card">
+            <a href="Biologicas.html"><svg class="category-icon floating" viewBox="0 0 24 24" fill="var(--primary)">
+                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z" />
+            </svg>
+            <h3>Biológicas</h3>
+            <p>Biologia, Anatomia e Fisiologia</p>
+        </div></a>
+
+        <div class="category-card">
+            <a href="LinguagensArtes.html">
+            <svg class="category-icon floating" viewBox="0 0 24 24" fill="var(--primary)">
+                <path
+                    d="M20,11H4V8H20M20,15H13V13H20M20,19H13V17H20M11,19H4V13H11M20.33,4.67L18.67,3L17,4.67L15.33,3L13.67,4.67L12,3L10.33,4.67L8.67,3L7,4.67L5.33,3L3.67,4.67L2,3V19A2,2 0 0,0 4,21H20A2,2 0 0,0 22,19V3L20.33,4.67Z" />
+            </svg>
+            <h3>Linguagens e Artes</h3>
+            <p>Português, Inglês, Artes, Música e Teatro</p>
+        </div></a>
+    </main>
+
+    <section class="motivation-section">
+        <h2>Conectando Conhecimento</h2>
+        <p>Transformamos o aprendizado em uma jornada colaborativa. Nossa plataforma une estudantes e professores,
+            criando um ambiente onde o conhecimento flui livremente e o sucesso acadêmico está ao alcance de todos.</p>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="about-section">
+                <h3>Sobre o StudentServices</h3>
+                <p>Somos uma plataforma dedicada a facilitar a conexão entre estudantes e professores, tornando o
+                    aprendizado mais acessível e eficiente.</p>
+                <p>Email: contato@studentservices.com</p>
+                <div class="social-links">
+                    <a href="https://facebook.com/studentservices"><svg width="24" height="24" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" />
+                        </svg></a>
+                    <a href="https://twitter.com/studentservices"><svg width="24" height="24" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" />
+                        </svg></a>
+                    <a href="https://instagram.com/studentservices"><svg width="24" height="24" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+                        </svg></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'flex';
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'none';
+        }
+
+        document.querySelectorAll('#loginForm, #registerForm').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('Form submitted:', form.id);
+            });
+        });
+
+        window.onclick = (event) => {
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+        }
+
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                console.log('Categoria selecionada:', card.querySelector('h3').textContent);
+            });
+        });
+
+        document.querySelector('.search-bar input').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value;
+                console.log('Pesquisando por:', searchTerm);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
